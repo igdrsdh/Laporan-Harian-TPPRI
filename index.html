@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Laporan Harian TPPRI</title>
+    <title>Laporan Rawat Inap</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -19,48 +19,50 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
         }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.4s, color 0.4s;
         }
 
         /* Tombol + / - */
         .counter-btn {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
-            font-weight: 800;
-            font-size: 16px;
-            transition: all 0.15s;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             cursor: pointer;
             user-select: none;
             flex-shrink: 0;
             border: none;
         }
         .counter-btn:active {
-            transform: scale(0.88);
+            transform: scale(0.85);
         }
         .counter-btn.minus {
-            background: #fee2e2;
+            background: #fef2f2;
             color: #dc2626;
         }
         .counter-btn.minus:hover {
             background: #fecaca;
+            transform: scale(1.08);
         }
         .counter-btn.plus {
-            background: #dcfce7;
+            background: #f0fdf4;
             color: #16a34a;
         }
         .counter-btn.plus:hover {
             background: #bbf7d0;
+            transform: scale(1.08);
         }
         .dark .counter-btn.minus {
             background: #450a0a;
@@ -79,11 +81,12 @@
 
         /* Tampilan nilai */
         .value-display {
-            min-width: 32px;
+            min-width: 34px;
             text-align: center;
             font-weight: 800;
-            font-size: 15px;
+            font-size: 16px;
             color: #0f172a;
+            transition: all 0.15s;
         }
         .dark .value-display {
             color: #f1f5f9;
@@ -91,40 +94,54 @@
 
         /* Kartu section */
         .section-card {
-            transition: all 0.2s;
-            border-radius: 16px;
+            transition: all 0.25s ease;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
         }
+        .section-card:hover {
+            border-color: #cbd5e1;
+        }
+        .dark .section-card {
+            border-color: #1e293b;
+        }
+        .dark .section-card:hover {
+            border-color: #334155;
+        }
+
         .section-header {
-            transition: background-color 0.2s;
+            transition: all 0.2s;
             cursor: pointer;
-            border-radius: 16px 16px 0 0;
+            border-radius: 18px 18px 0 0;
+            background: transparent;
         }
         .section-header:hover {
-            background-color: #f8fafc;
+            background: #f8fafc;
         }
         .dark .section-header:hover {
-            background-color: #1e293b;
+            background: #1e293b;
         }
 
         /* Output laporan */
         .output-box {
-            background: #0f172a;
+            background: linear-gradient(145deg, #0f172a, #1e293b);
             color: #34d399;
-            font-family: 'Courier New', monospace;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
             font-size: 12px;
-            line-height: 1.8;
-            padding: 16px;
+            line-height: 1.9;
+            padding: 20px;
             border-radius: 14px;
             min-height: 250px;
             max-height: 450px;
             overflow-y: auto;
             white-space: pre-wrap;
             word-break: break-word;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+            border: 1px solid #1e293b;
         }
         @media (min-width: 640px) {
             .output-box {
                 font-size: 13px;
-                padding: 20px;
+                padding: 24px;
                 min-height: 280px;
                 max-height: 520px;
             }
@@ -139,6 +156,10 @@
             background: #334155;
             border-radius: 10px;
         }
+        .dark .output-box {
+            background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+            border-color: #1a1a1a;
+        }
 
         /* Collapsible */
         .collapsible-content {
@@ -146,12 +167,12 @@
         }
         .collapsible-content.expanded {
             display: block;
-            animation: fadeSlide 0.2s ease-out forwards;
+            animation: fadeSlide 0.25s ease-out forwards;
         }
         @keyframes fadeSlide {
             from {
                 opacity: 0;
-                transform: translateY(-6px);
+                transform: translateY(-8px);
             }
             to {
                 opacity: 1;
@@ -167,6 +188,7 @@
             flex: 1;
             min-width: 35px;
             color: #334155;
+            letter-spacing: 0.2px;
         }
         @media (min-width: 400px) {
             .item-label {
@@ -177,31 +199,36 @@
         .dark .item-label {
             color: #cbd5e1;
         }
+
         .item-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 4px 8px;
-            transition: all 0.15s;
+            background: #fafafa;
+            border: 1px solid #e8ecf0;
+            border-radius: 12px;
+            padding: 4px 10px;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             width: 100%;
         }
         .item-box:hover {
             border-color: #94a3b8;
+            background: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
         .dark .item-box {
             background: #1e293b;
-            border-color: #334155;
+            border-color: #2d3a4f;
         }
         .dark .item-box:hover {
-            border-color: #64748b;
+            border-color: #475569;
+            background: #253040;
         }
 
         /* Panah toggle */
         .toggle-arrow {
-            transition: transform 0.3s ease;
+            transition: transform 0.35s ease;
             color: #94a3b8;
             flex-shrink: 0;
         }
@@ -212,21 +239,32 @@
             color: #64748b;
         }
 
-        /* Badge total */
+        /* Badge total dengan animasi */
         .badge-total {
             font-size: 12px;
             font-weight: 800;
-            padding: 1px 12px;
-            border-radius: 20px;
+            padding: 2px 14px;
+            border-radius: 30px;
             background: #e0f2fe;
             color: #0284c7;
             flex-shrink: 0;
+            transition: all 0.3s ease;
+            min-width: 28px;
+            text-align: center;
         }
         @media (min-width: 640px) {
             .badge-total {
                 font-size: 13px;
-                padding: 2px 14px;
+                padding: 2px 18px;
             }
+        }
+        .badge-total:has-text(>0) {
+            animation: pulseBadge 0.3s ease;
+        }
+        @keyframes pulseBadge {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+            100% { transform: scale(1); }
         }
         .dark .badge-total {
             background: #0c4a6e;
@@ -249,53 +287,56 @@
             color: #c084fc;
         }
 
-        /* Tombol copy */
+        /* Tombol copy - elegan */
         .btn-copy {
-            background: #334155;
+            background: linear-gradient(135deg, #334155, #1e293b);
             color: #f1f5f9;
-            padding: 6px 16px;
-            border-radius: 10px;
+            padding: 6px 18px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 11px;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
             border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         .btn-copy:hover {
-            background: #475569;
-            transform: scale(1.02);
+            background: linear-gradient(135deg, #475569, #1e293b);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
         .btn-copy:active {
-            transform: scale(0.96);
+            transform: scale(0.96) translateY(0);
         }
         @media (min-width: 640px) {
             .btn-copy {
-                padding: 8px 20px;
+                padding: 8px 24px;
                 font-size: 12px;
-                border-radius: 12px;
+                border-radius: 14px;
             }
         }
         .dark .btn-copy {
-            background: #1e293b;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
             color: #e2e8f0;
         }
         .dark .btn-copy:hover {
-            background: #334155;
+            background: linear-gradient(135deg, #334155, #0f172a);
         }
 
-        /* Header */
+        /* Header - elegan */
         .header-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 800;
             color: #0f172a;
+            letter-spacing: -0.3px;
         }
         @media (min-width: 640px) {
             .header-title {
-                font-size: 20px;
+                font-size: 22px;
             }
         }
         .dark .header-title {
@@ -303,48 +344,51 @@
         }
         .header-sub {
             font-size: 9px;
-            color: #64748b;
+            color: #94a3b8;
             font-weight: 500;
+            letter-spacing: 0.3px;
         }
         @media (min-width: 640px) {
             .header-sub {
-                font-size: 10px;
+                font-size: 11px;
             }
         }
         .dark .header-sub {
-            color: #94a3b8;
+            color: #64748b;
         }
 
         /* Tombol reset */
         .btn-reset {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
-            padding: 0 12px;
+            padding: 0 14px;
             height: 36px;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 11px;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
             border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
         }
         .btn-reset:hover {
-            background: #dc2626;
-            transform: scale(1.02);
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
         }
         .btn-reset:active {
-            transform: scale(0.96);
+            transform: scale(0.96) translateY(0);
         }
         @media (min-width: 640px) {
             .btn-reset {
-                padding: 0 16px;
-                height: 40px;
+                padding: 0 20px;
+                height: 42px;
                 font-size: 13px;
-                border-radius: 12px;
+                border-radius: 14px;
                 gap: 6px;
             }
         }
@@ -353,25 +397,26 @@
         .btn-dark {
             width: 36px;
             height: 36px;
-            border-radius: 10px;
+            border-radius: 12px;
             background: #f1f5f9;
             border: 1px solid #e2e8f0;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
             cursor: pointer;
             flex-shrink: 0;
         }
         .btn-dark:hover {
             background: #e2e8f0;
+            transform: scale(1.05);
         }
         @media (min-width: 640px) {
             .btn-dark {
-                width: 40px;
-                height: 40px;
-                border-radius: 12px;
+                width: 42px;
+                height: 42px;
+                border-radius: 14px;
                 font-size: 20px;
             }
         }
@@ -383,27 +428,27 @@
             background: #334155;
         }
 
-        /* Input date */
+        /* Input date - lebih halus */
         .input-date {
             width: 100%;
-            padding: 10px 14px;
-            border-radius: 10px;
+            padding: 10px 16px;
+            border-radius: 12px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             outline: none;
             font-weight: 500;
             font-size: 14px;
             color: #0f172a;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
         }
         .input-date:focus {
             border-color: #0ea5e9;
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
         }
         @media (min-width: 640px) {
             .input-date {
-                padding: 12px 16px;
-                border-radius: 12px;
+                padding: 12px 18px;
+                border-radius: 14px;
                 font-size: 15px;
             }
         }
@@ -414,46 +459,47 @@
         }
         .dark .input-date:focus {
             border-color: #0ea5e9;
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
         }
 
         .label-date {
             font-size: 10px;
             font-weight: 700;
-            color: #64748b;
+            color: #94a3b8;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
         @media (min-width: 640px) {
             .label-date {
                 font-size: 11px;
-                margin-bottom: 4px;
+                margin-bottom: 5px;
             }
         }
         .dark .label-date {
-            color: #94a3b8;
+            color: #64748b;
         }
 
-        /* Toast */
+        /* Toast - lebih mulus */
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%) translateY(80px);
             z-index: 50;
-            padding: 10px 20px;
-            background: #1e293b;
+            padding: 12px 24px;
+            background: #0f172a;
             color: #f1f5f9;
-            border-radius: 14px;
+            border-radius: 16px;
             font-weight: 700;
             font-size: 13px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transition: transform 0.35s ease, opacity 0.35s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
             opacity: 0;
             pointer-events: none;
             white-space: nowrap;
+            border: 1px solid #1e293b;
         }
         .toast.show {
             transform: translateX(-50%) translateY(0);
@@ -461,56 +507,72 @@
         }
         @media (min-width: 640px) {
             .toast {
-                padding: 12px 24px;
+                padding: 14px 32px;
                 font-size: 14px;
-                border-radius: 16px;
-                bottom: 24px;
+                border-radius: 18px;
+                bottom: 32px;
             }
         }
         .dark .toast {
-            background: #0f172a;
+            background: #1e293b;
             color: #e2e8f0;
+            border-color: #334155;
         }
 
         /* GRID: 1 kolom semua */
         .grid-items {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 5px;
+            gap: 6px;
         }
 
-        /* SEPARATOR - SEMUA SAMA */
+        /* SEPARATOR - elegan dengan ikon kecil */
         .sub-group {
             grid-column: 1 / -1;
-            padding: 6px 4px 2px 4px;
+            padding: 8px 4px 4px 4px;
             font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #64748b;
-            border-bottom: 2px solid #e2e8f0;
-            margin-top: 4px;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            border-bottom: 1.5px solid #e8ecf0;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sub-group::before {
+            content: "▸";
+            font-size: 10px;
+            color: #cbd5e1;
         }
         .sub-group:first-of-type {
             margin-top: 0;
         }
         .dark .sub-group {
-            color: #94a3b8;
-            border-bottom-color: #334155;
+            color: #64748b;
+            border-bottom-color: #2d3a4f;
+        }
+        .dark .sub-group::before {
+            color: #475569;
         }
         @media (min-width: 640px) {
             .sub-group {
                 font-size: 11px;
-                padding: 8px 4px 4px 4px;
+                padding: 10px 4px 5px 4px;
+                gap: 10px;
+            }
+            .sub-group::before {
+                font-size: 11px;
             }
         }
 
         .section-padding {
-            padding: 12px;
+            padding: 14px;
         }
         @media (min-width: 640px) {
             .section-padding {
-                padding: 16px;
+                padding: 20px;
             }
         }
         .section-padding-top {
@@ -521,32 +583,49 @@
         }
         @media (min-width: 640px) {
             .header-wrap {
-                padding: 12px 24px;
+                padding: 14px 28px;
             }
+        }
+
+        /* Badge header gradient */
+        .header-gradient {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        }
+        .dark .header-gradient {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+        }
+
+        /* Card date lebih soft */
+        .date-card {
+            background: #fafafa;
+            border-radius: 18px;
+        }
+        .dark .date-card {
+            background: #1e293b;
         }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors">
+<body class="bg-[#f4f6f9] dark:bg-[#0a0e14] text-slate-900 dark:text-slate-100 min-h-screen transition-colors">
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 header-wrap">
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white/85 dark:bg-slate-900/85 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 header-wrap shadow-sm">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="min-w-0">
-                <h1 class="header-title truncate">📋 Laporan Rawat Inap</h1>
+                <h1 class="header-title">📋 Laporan Rawat Inap</h1>
                 <p class="header-sub hidden sm:block">Klik <span class="font-bold text-emerald-600 dark:text-emerald-400">+</span> atau <span class="font-bold text-red-500 dark:text-red-400">−</span> untuk mengubah jumlah</p>
             </div>
-            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                 <button id="darkToggle" class="btn-dark" title="Ubah tema">🌙</button>
                 <button onclick="resetAll()" class="btn-reset">🔄 Reset</button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto pt-[68px] sm:pt-[80px] pb-12 px-3 sm:px-4">
+    <main class="max-w-4xl mx-auto pt-[72px] sm:pt-[88px] pb-14 px-3 sm:px-4">
 
         <!-- Tanggal & Jam -->
-        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6 mb-4 transition-colors">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6 mb-5 transition-colors date-card">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                     <label class="label-date">📅 Tanggal Laporan</label>
                     <input type="date" id="reportDate" class="input-date" />
@@ -559,10 +638,10 @@
         </section>
 
         <!-- RAWAT JALAN IGD -->
-        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-3 overflow-hidden section-card">
-            <div onclick="toggleSection('rjSection')" class="section-header flex items-center justify-between p-3 sm:p-4">
-                <div class="flex items-center gap-2 sm:gap-3 min-w-0">
-                    <span class="text-xl sm:text-2xl flex-shrink-0">🏥</span>
+        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-4 overflow-hidden section-card">
+            <div onclick="toggleSection('rjSection')" class="section-header flex items-center justify-between p-3.5 sm:p-5">
+                <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <span class="text-2xl sm:text-3xl flex-shrink-0">🏥</span>
                     <h2 class="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-slate-700 dark:text-slate-200 truncate">Rawat Jalan IGD</h2>
                     <span class="badge-total" id="rjTotal">0</span>
                 </div>
@@ -576,10 +655,10 @@
         </section>
 
         <!-- RAWAT INAP MRS -->
-        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-3 overflow-hidden section-card">
-            <div onclick="toggleSection('mrsSection')" class="section-header flex items-center justify-between p-3 sm:p-4">
-                <div class="flex items-center gap-2 sm:gap-3 min-w-0">
-                    <span class="text-xl sm:text-2xl flex-shrink-0">🛏️</span>
+        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-4 overflow-hidden section-card">
+            <div onclick="toggleSection('mrsSection')" class="section-header flex items-center justify-between p-3.5 sm:p-5">
+                <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <span class="text-2xl sm:text-3xl flex-shrink-0">🛏️</span>
                     <h2 class="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-slate-700 dark:text-slate-200 truncate">Rawat Inap (MRS)</h2>
                     <span class="badge-total green" id="mrsTotal">0</span>
                 </div>
@@ -593,10 +672,10 @@
         </section>
 
         <!-- KETERANGAN MRS -->
-        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-3 overflow-hidden section-card">
-            <div onclick="toggleSection('ketMrsSection')" class="section-header flex items-center justify-between p-3 sm:p-4">
-                <div class="flex items-center gap-2 sm:gap-3 min-w-0">
-                    <span class="text-xl sm:text-2xl flex-shrink-0">📝</span>
+        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-4 overflow-hidden section-card">
+            <div onclick="toggleSection('ketMrsSection')" class="section-header flex items-center justify-between p-3.5 sm:p-5">
+                <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <span class="text-2xl sm:text-3xl flex-shrink-0">📝</span>
                     <h2 class="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-slate-700 dark:text-slate-200 truncate">Keterangan MRS</h2>
                 </div>
                 <svg id="arrow-ketMrsSection" class="toggle-arrow w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -609,10 +688,10 @@
         </section>
 
         <!-- KRS -->
-        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-4 overflow-hidden section-card">
-            <div onclick="toggleSection('krsSection')" class="section-header flex items-center justify-between p-3 sm:p-4">
-                <div class="flex items-center gap-2 sm:gap-3 min-w-0">
-                    <span class="text-xl sm:text-2xl flex-shrink-0">📤</span>
+        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-5 overflow-hidden section-card">
+            <div onclick="toggleSection('krsSection')" class="section-header flex items-center justify-between p-3.5 sm:p-5">
+                <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <span class="text-2xl sm:text-3xl flex-shrink-0">📤</span>
                     <h2 class="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-slate-700 dark:text-slate-200 truncate">KRS (Keluar Rawat Inap)</h2>
                     <span class="badge-total purple" id="krsTotal">0</span>
                 </div>
@@ -626,8 +705,8 @@
         </section>
 
         <!-- OUTPUT -->
-        <section class="bg-slate-900 dark:bg-black rounded-2xl shadow-xl overflow-hidden border border-slate-800">
-            <div class="px-4 py-2.5 sm:px-5 sm:py-3.5 bg-slate-800 dark:bg-slate-950 border-b border-slate-700 flex justify-between items-center gap-2 flex-wrap">
+        <section class="bg-slate-900 dark:bg-black rounded-2xl shadow-xl overflow-hidden border border-slate-800 transition-colors">
+            <div class="px-4 py-3 sm:px-6 sm:py-4 bg-slate-800 dark:bg-slate-950 border-b border-slate-700 flex justify-between items-center gap-3 flex-wrap">
                 <h3 class="text-white font-bold text-xs sm:text-sm uppercase tracking-wider">📄 Preview Laporan</h3>
                 <button onclick="copyReport()" class="btn-copy">📋 Salin</button>
             </div>
@@ -646,13 +725,11 @@
     <script>
         // ==================== DATA KONFIGURASI ====================
 
-        // Rawat Jalan IGD
         const RJ_ITEMS = [
             'BPJS', 'Umum', 'Jasa Raharja', 'BPJS TK',
             'Jaya Mestika', 'AdMedika', 'Sinarmas', 'PT. PP'
         ];
 
-        // Rawat Inap MRS
         const MRS_GROUPS = [{
             label: 'BPJS',
             items: ['BPJS', 'BPJSTK']
@@ -664,7 +741,6 @@
             items: ['AdMedika', 'Prudential', 'Jasa Raharja', 'CJ Feed', 'PT Jaya Mestika', 'PT Penta', 'Ajinomoto', 'Sinarmas', 'Reliance', 'Allianz']
         }];
 
-        // Keterangan MRS
         const KET_MRS_GROUPS = [{
             label: 'BPJS',
             items: ['BPJS PBI', 'BPJS Mandiri Kelas 1', 'BPJS Mandiri Kelas 2', 'BPJS Mandiri Kelas 3', 'BPJS TK']
@@ -679,7 +755,6 @@
             items: ['Jampersal', 'Prudential', 'AdMedika', 'Jasa Raharja', 'Ajinomoto', 'CJ Feed', 'Covid', 'PT Jaya Mestika', 'PT Penta', 'Sinarmas', 'Reliance', 'Allianz']
         }];
 
-        // KRS
         const KRS_GROUPS = [{
             label: 'BPJS',
             items: ['BPJS PBI', 'BPJS Mandiri kelas 1', 'BPJS Mandiri Kelas 2', 'BPJS Mandiri Kelas 3', 'BPJS TK']
@@ -765,7 +840,12 @@
             if (!totalId) return;
             const total = Object.values(state[stateKey]).reduce((a, b) => a + b, 0);
             const el = document.getElementById(totalId);
-            if (el) el.textContent = total;
+            if (el) {
+                el.textContent = total;
+                // Animasi kecil saat berubah
+                el.style.transform = 'scale(1.15)';
+                setTimeout(() => el.style.transform = 'scale(1)', 200);
+            }
         }
 
         // ==================== ADJUST ====================
